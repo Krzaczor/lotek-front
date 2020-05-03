@@ -1,25 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import styled from 'styled-components';
+
+import Navbar from './Components/navbar';
+import DaysWeek from './Components/daysWeek';
+import PageIndex from './Pages/main';
+
+const AppWrapper = styled.div`
+  width: 100%;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppWrapper>
+      <Router>
+        <Navbar />
+        <DaysWeek />
+        <Switch>
+          <Route path="/" exact component={PageIndex} />
+          <Route path="*" >404 page</Route>
+        </Switch>
+      </Router>
+    </AppWrapper>
   );
 }
 
