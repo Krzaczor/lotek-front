@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Axios from 'axios';
 
-import Calendar from '../Components/Calendar/calendar';
+import Calendar from '../Components/Calendar';
+
+const Loader = styled.p`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+`;
 
 const MainWrapper = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
+    display: 100vw;
     overflow: hidden;
     padding: 20px;
     margin-top: 90px;
@@ -26,32 +33,36 @@ const months = [
     'Grudzień'
 ];
 
-// const days = [
-//     'poniedziałek',
-//     'wtorek',
-//     'środa',
-//     'czwartek',
-//     'piątek',
-//     'sobota',
-//     'niedziela'
-// ];
-
 export default () => {
+    const [draws, setDraws] = useState([]);
+
+    useEffect(() => {
+        const getDraws = async () => {
+            const result = await Axios.get('http://localhost:3000/draws');
+            setDraws(result.data);
+        }
+        getDraws();
+    }, []);
+
+    if (draws.length === 0) {
+        return <Loader>Ładowanie...</Loader>;
+    }
 
     return (
         <MainWrapper>
             <Calendar
                 year={2020}
-                month={4}
+                month={5}
                 monthsName={months}
+                data={draws}
                 day={{
-                    styles: `
-                        height: 45px;
+                    styles: (props) => `
                         font-family: 'Segoe UI Regular';
-                        font-size: 16px;
-                        border: none;
+                        font-size: 18px;
                         cursor: pointer;
                         background-color: inherit;
+                        border: ${props.collaction.find(({ time }) => time === props.time.toJSON()) ? '1px solid #ffd105' : 'none'};
+                        border-radius: ${props.collaction.find(({ time }) => time === props.time.toJSON()) ? '50%' : 'none'};
                     `
                 }}
             />

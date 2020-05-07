@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 const Week = styled.ul`
     list-style-type: none;
-    display: flex;
-    align-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-column-gap: 11px;
     width: 100%;
     padding: 10px 20px;
     position: fixed;
@@ -14,18 +14,26 @@ const Week = styled.ul`
 `;
 
 const Day = styled.li`
-    width: calc(100% / 7);
     text-align: center;
-    border-right: 1px solid lightgray;
-    margin: 0 3px;
-
-    &:first-child {
-        margin-left: 0;
-    }
+    position: relative;
 
     &:last-child {
-        margin-right: 0;
         border-right: none;
+    }
+
+    &:before {
+        content: "";
+        display: inline-block;
+        width: 1px;
+        height: 100%;
+        background-color: lightgray;
+        position: absolute;
+        right: 0;
+        transform: translateX(7px);
+    }
+
+    &:last-child:before {
+        content: none;
     }
 `;
 
