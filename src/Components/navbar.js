@@ -6,7 +6,7 @@ const Navbar = styled.nav`
     width: 100vw;
     background-color: #01a0e2;
     color: #fff;
-    height: 50px;
+    height: 40px;
     margin-bottom: 1px;
     position: fixed;
     top: 0;
@@ -29,8 +29,9 @@ const Url = styled.a`
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: inherit;
-    line-height: 2em;
+    color: #fff;
+    line-height: 1.5em;
+    font-size: 14px;
 `;
 
 export default () => {

@@ -1,91 +1,52 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Month = styled.div`
-    width: 100%;
-    /* max-width:  */
+import Month from './month';
+
+const Calendar = styled.div`
     ${props => props.styles}
 `;
+const DefaultDay = (props) => <button>{props.children}</button>;
 
-const MonthTitle = styled.h2`
-    margin-bottom: 15px;
-`;
-
-const Days = styled.div`
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(6, 38px);
-    grid-gap: 6px 11px;
-
-    & > *:first-child {
-        grid-column-start: ${props => props.firstDay};
-    }
-`;
-
-const Day = styled.button`
-    ${props => props.styles(props)};
-`
-
-const getCurrentYear = () => (new Date()).getFullYear();
-const getCurrentMonth = () => (new Date()).getMonth();
 const getMonthsName = () => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', ' October', ' November', 'December'];
 const getdaysName = () => ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'];
 
-const getCountDaysInMonth = (year, month) => {
-    if (!year) year = (new Date()).getFullYear();
-    if (!month) month = (new Date()).getMonth();
-
-    return (new Date(year, month, 0)).getDate();
-}
-
-const getFirstName = (year, month) => {
-    const day = (new Date(year, month - 1, 1)).getDay();
-    console.log(day);
-
-    if (day === 0) {
-        return 7;
-    }
-
-    return day;
-}
-
 export default (props) => {
     const calendar = {
-        start: props.start ?? null,
-        end: props.end ?? null,
-        year: props.year ?? getCurrentYear(),
-        month: props.month ?? getCurrentMonth(),
-        monthsName: props.monthsName ?? getMonthsName(),
-        daysName: props.daysName ?? getdaysName(),
-        data: props?.data ?? {},
+        start: props?.start ?? new Date(),
+        end: props?.end ?? new Date(new Date().getFullYear(), 0, 1),
+        styles: props?.styles ?? '',
+        year: {
+            styles: props?.year?.styles ?? ''
+        },
+        month: {
+            names: props?.month?.names ?? getMonthsName(),
+            styles: props?.month?.styles ?? ''
+        },
         day: {
-            element: props?.day?.element ?? 'button',
-            styles: props?.day?.styles ?? '&:hover {cursor: pointer;}'
+            names: props?.day?.names ?? getdaysName(),
+            element: props?.day?.element ?? DefaultDay,
+            styles: props?.day?.styles ?? ''
         }
     }
 
-    const daysInMonth = getCountDaysInMonth(calendar.year, calendar.month);
-    const firstDay = getFirstName(calendar.year, calendar.month);
-    const allDays = [];
-
-    for (let day = 1; day <= daysInMonth; ++day) {
-        allDays.push(day);
-    }
+    let months = calendar.start.map(time => `${new Date(time).getFullYear()} ${new Date(time).getMonth() + 1}`);
+    months = Array.from(new Set(months));
 
     return (
-        <Month>
-            <MonthTitle>{calendar.monthsName[calendar.month - 1]} {calendar.year}</MonthTitle>
-            <Days firstDay={firstDay}>
-                {allDays.map(day =>
-                    <Day
-                        collaction={calendar.data}
-                        key={day}
-                        time={new Date(calendar.year, calendar.month - 1, day)}
-                        tag={calendar.day.element}
-                        styles={calendar.day.styles}
-                    >{day}</Day>
-                )}
-            </Days>
-        </Month>
+        <Calendar styles={calendar.styles}>{
+            months.map((time) =>
+                <Month
+                    key={time}
+                    day={calendar.day}
+                    year={Number(time.split(' ')[0])}
+                    month={{
+                        name: calendar.month.names[Number(time.split(' ')[1] - 1)],
+                        number: Number(time.split(' ')[1]),
+                        styles: calendar.month.styles
+                    }}
+                />
+            )
+        }</Calendar>
     )
 }

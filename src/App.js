@@ -7,24 +7,29 @@ import {
 import styled from 'styled-components';
 
 import Navbar from './Components/navbar';
-import DaysWeek from './Components/daysWeek';
 import PageIndex from './Pages/main';
+import NotFound from './Pages/notFound';
 
 const AppWrapper = styled.div`
   width: 100%;
 `;
 
+const Main = styled.div`
+  padding: 0 20px;
+`;
+
 function App() {
   return (
     <AppWrapper>
-      <Router>
-        <Navbar />
-        <DaysWeek />
-        <Switch>
-          <Route path="/" exact component={PageIndex} />
-          <Route path="*" >404 page</Route>
-        </Switch>
-      </Router>
+      <Navbar />
+      <Main>
+        <Router>
+          <Switch>
+            <Route path="/" exact component={PageIndex} />
+            <Route path="*" component={NotFound} />
+          </Switch>
+        </Router>
+      </Main>
     </AppWrapper>
   );
 }

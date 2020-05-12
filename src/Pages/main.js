@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Axios from 'axios';
 
+import DaysWeek from '../Components/daysWeek';
 import Calendar from '../Components/Calendar';
+
+const heightAndWidth = '35px';
 
 const Loader = styled.p`
     position: absolute;
@@ -12,10 +15,34 @@ const Loader = styled.p`
 `;
 
 const MainWrapper = styled.div`
-    display: 100vw;
-    overflow: hidden;
-    padding: 20px;
+    width: 100%;
     margin-top: 90px;
+`;
+
+const DayWrapper = styled.div`
+    text-align: center;
+    font-family: 'Segoe UI Regular';
+`;
+
+const DayAsButton = styled.button`
+    width: ${heightAndWidth};
+    height: ${heightAndWidth};
+    background-color: inherit;
+    font-size: 14px;
+    border: 2px solid #ffd105;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.1s linear;
+
+    &:hover,
+    &:focus {
+        background-color: #ffd105;
+    }
+`;
+
+const DayAsSpan = styled.span`
+    display: inline-block;
+    line-height: ${heightAndWidth};
 `;
 
 const months = [
@@ -38,32 +65,40 @@ export default () => {
 
     useEffect(() => {
         const getDraws = async () => {
-            const result = await Axios.get('http://localhost:3000/draws');
+            const result = await Axios.get('http://localhost:3001/draws');
             setDraws(result.data);
         }
         getDraws();
+
+
     }, []);
 
     if (draws.length === 0) {
         return <Loader>Ładowanie...</Loader>;
     }
 
+    const drawsTime = draws.map(({ time }) => time);
+
     return (
         <MainWrapper>
+            <DaysWeek />
             <Calendar
-                year={2020}
-                month={5}
-                monthsName={months}
-                data={draws}
+                start={drawsTime}
+                end={drawsTime[drawsTime.length - 1]}
+                month={{
+                    names: months,
+                    styles: `margin-bottom: 15px;`
+                }}
                 day={{
-                    styles: (props) => `
-                        font-family: 'Segoe UI Regular';
-                        font-size: 18px;
-                        cursor: pointer;
-                        background-color: inherit;
-                        border: ${props.collaction.find(({ time }) => time === props.time.toJSON()) ? '1px solid #ffd105' : 'none'};
-                        border-radius: ${props.collaction.find(({ time }) => time === props.time.toJSON()) ? '50%' : 'none'};
-                    `
+                    element: (props) => {
+                        return (
+                            <DayWrapper>{
+                                drawsTime.includes(props.time.toJSON()) ?
+                                    <DayAsButton>{props.children}</DayAsButton> :
+                                    <DayAsSpan>{props.children}</DayAsSpan>
+                            }</DayWrapper>
+                        )
+                    }
                 }}
             />
         </MainWrapper>
