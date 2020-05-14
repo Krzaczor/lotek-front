@@ -6,7 +6,7 @@ const Week = styled.ul`
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-column-gap: 11px;
-    width: 100vw;
+    width: 100%;
     padding: 10px 20px;
     position: fixed;
     top: 40px;

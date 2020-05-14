@@ -14,7 +14,6 @@ const getdaysName = () => ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'];
 export default (props) => {
     const calendar = {
         start: props?.start ?? new Date(),
-        end: props?.end ?? new Date(new Date().getFullYear(), 0, 1),
         styles: props?.styles ?? '',
         year: {
             styles: props?.year?.styles ?? ''
