@@ -1,14 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import { device } from '../config/styles';
 
 const LoaderWrapper = styled.div`
     position: relative;
-    height: 20vh;
+    height: ${props => props.suspense ? '100vh' : '20vh'};
 
     @media ${device.tablet} {
-        width: 50%;
-        height: calc(100vh - 3rem);
+        ${props => props.suspense ? '' : 'width: 50%'};
+        ${props => props.suspense ? '' : 'height: calc(100vh - 3rem)'};
     }
 `;
 
@@ -46,9 +47,9 @@ const Element = styled.span`
     animation: 0.6s linear ${props => props.time ? props.time : ''} infinite ${AminationElectron};
 `;
 
-const Snipper = () => {
+const Snipper = ({suspense}) => {
     return (
-        <LoaderWrapper>
+        <LoaderWrapper suspense={suspense}>
             <Loader>
                 <Element />
                 <Element time={'0.08s'} />
@@ -56,6 +57,14 @@ const Snipper = () => {
             </Loader>
         </LoaderWrapper>
     )
+}
+
+Snipper.propTypes = {
+    suspense: PropTypes.bool,
+}
+
+Snipper.defaultProps = {
+    suspense: false,
 }
 
 export default Snipper;

@@ -13,7 +13,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 
 const App = () => (
   <Router>
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={<Spinner suspense />}>
       <Switch>
           <Route exact path="/" component={Draws} />
           <Route exact path="/dashboard" component={Dashboard} />

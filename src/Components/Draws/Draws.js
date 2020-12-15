@@ -1,5 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { compose } from 'recompose';
+
+import withHandleError from '../../hocs/withHandleError';
+import withHandleLoading from '../../hocs/withHandleLoading';
 
 import { device } from '../../config/styles';
 import Calendar from './DrawsCalendar/Calendar/Calendar';
@@ -28,4 +32,7 @@ const DrawsComponent = ({draws, hasNextDraws, moreDraws}) => {
     )
 };
 
-export default DrawsComponent;
+export default compose(
+    withHandleLoading,
+    withHandleError
+)(DrawsComponent);
