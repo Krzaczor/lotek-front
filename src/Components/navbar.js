@@ -1,45 +1,48 @@
 import React from 'react';
-// import { Link } from "react-router-dom";
+import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
-const Navbar = styled.nav`
-    width: 100vw;
+const Nav = styled.nav`
+    width: 100%;
     background-color: #01a0e2;
-    color: #fff;
-    height: 40px;
-    margin-bottom: 1px;
+    padding: 0 1em;
     position: fixed;
     top: 0;
+    z-index: 999;
 `;
 
 const List = styled.ul`
+    height: 3em;
     list-style-type: none;
     display: flex;
-    align-content: center;
     align-items: center;
-    height: 100%;
 `;
 
 const ListItem = styled.li`
-    margin-left: 20px;
-`;
-
-const Url = styled.a`
-    display: inline-block;
-    text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #fff;
-    line-height: 1.5em;
-    font-size: 14px;
+    padding-left: 1em;
+
+    &:first-child {
+        padding: 0;
+    }
 `;
 
-export default () => {
+const Url = styled(Link)`
+    display: inline-block;
+    text-decoration: none;
+    line-height: 2em;
+    color: #fff;
+`;
+
+const Navbar = () => {
     return (
-        <Navbar>
+        <Nav>
             <List>
-                <ListItem><Url href='/' active>główna</Url></ListItem>
+                <ListItem><Url to='/' title='strona główna'>główna</Url></ListItem>
             </List>
-        </Navbar>
+        </Nav>
     )
 }
+
+export default Navbar;

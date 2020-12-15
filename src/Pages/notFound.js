@@ -11,7 +11,7 @@ const NotFound = styled.div`
 `;
 
 const Message = styled.p`
-    line-height: 40px;
+    line-height: 3em;
 `;
 
 export default () => {

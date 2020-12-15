@@ -1,42 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Day from './day';
+import { device } from '../../../../config/styles';
+import Day from './Day';
 
-const Month = styled.div`
-    ${props => props.styles ?? ''}
+const MonthWrapper = styled.div`
+    &:last-child {
+        padding-bottom: 15px;
+    }
 `;
 
 const MonthTitle = styled.h3`
     margin-bottom: 10px;
+
+    @media ${device.tablet} {
+        padding-left: 15px;
+    }
 `;
 
 const Days = styled.div`
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-gap: 6px 11px;
+    display: flex;
+    flex-wrap: wrap;
 
     & > *:first-child {
-        grid-column-start: ${props => props.firstDay};
+        margin-left: calc((${props => props.firstDay} / 7) * 100%);
     }
 `;
 
 const getCountDaysInMonth = (year, month) => {
-    if (!year) year = (new Date()).getFullYear();
-    if (!month) month = (new Date()).getMonth();
-
     return (new Date(year, month, 0)).getDate();
 }
 
 const getFirstName = (year, month) => {
     const day = (new Date(year, month - 1, 1)).getDay();
-    return (day === 0) ? 7 : day;
+    return (day === 0) ? 6 : day - 1;
 }
 
-export default (props) => {
-    const name = props.month.name;
-    const monthNumber = props.month.number;
-    const yearNumber = props.year;
+const Month = ({ style, month, year }) => {
+    const name = month.name;
+    const monthNumber = parseInt(month.number);
+    const yearNumber = parseInt(year);
     const daysInMonth = getCountDaysInMonth(yearNumber, monthNumber);
     const firstDay = getFirstName(yearNumber, monthNumber);
     const allDays = [];
@@ -46,20 +49,19 @@ export default (props) => {
     }
 
     return (
-        <Month styles={props.month.styles}>
-            <MonthTitle>{`${name} ${yearNumber}`}</MonthTitle>
+        <MonthWrapper style={style}>
+            <MonthTitle>{`${yearNumber} ${name}`}</MonthTitle>
             <Days firstDay={firstDay}>
                 {allDays.map(day =>
                     <Day
                         key={day}
                         number={day}
-                        time={new Date(yearNumber, monthNumber - 1, day)}
-                        styles={props.day.styles}
-                        element={props.day.element}
-                        children={day}
+                        id={`${yearNumber}${monthNumber > 9 ? monthNumber : `0${monthNumber}`}${day > 9 ? day : `0${day}`}`}
                     />
                 )}
             </Days>
-        </Month>
+        </MonthWrapper>
     )
-}
+};
+
+export default Month;

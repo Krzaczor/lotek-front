@@ -1,37 +1,22 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
-import styled from 'styled-components';
+  Route,
+  Switch
+} from 'react-router-dom';
 
-import Navbar from './Components/navbar';
-import PageIndex from './Pages/main';
-import NotFound from './Pages/notFound';
+import Draws from './pages/Draws';
+import Dashboard from './pages/Dashboard';
+import NotFound from './pages/NotFound';
 
-const AppWrapper = styled.div`
-  width: 100%;
-`;
-
-const Main = styled.div`
-  padding: 0 20px;
-`;
-
-function App() {
-  return (
-    <AppWrapper>
-      <Navbar />
-      <Main>
-        <Router>
-          <Switch>
-            <Route path="/" exact component={PageIndex} />
-            <Route path="*" component={NotFound} />
-          </Switch>
-        </Router>
-      </Main>
-    </AppWrapper>
-  );
-}
+const App = () => (
+  <Router>
+      <Switch>
+          <Route exact path="/" component={Draws} />
+          <Route exact path="/dashboard" component={Dashboard} />
+          <Route path="*" component={NotFound} />
+      </Switch>
+  </Router>
+);
 
 export default App;
