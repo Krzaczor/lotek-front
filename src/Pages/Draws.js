@@ -22,7 +22,7 @@ const Section = styled.section`
 const styleBodyElement = document.querySelector('body').style;
 
 export default () => {
-    const {showModal} = useDrawsContext();
+    const { showModal } = useDrawsContext();
     const { hasMoreWidth } = useMatchMedia();
 
     useEffect(() => {

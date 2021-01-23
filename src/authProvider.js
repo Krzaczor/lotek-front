@@ -1,18 +1,19 @@
-import { login, verifyToken, token } from './utils/index';
+import { login, verifyToken } from './utils/index';
+import { setToken, removeToken } from './utils/token';
 
 const authProvider = {
     login: (params) => {
         return login(params)
             .then(response => {
-                token.set(response.data.token);
+                setToken(response.data.token);
                 return Promise.resolve();
             })
             .catch(error => {
-                return Promise.reject();
+                return Promise.reject(error);
             })
     },
     logout: () => {
-        token.remove();
+        removeToken();
         return Promise.resolve();
     },
     checkAuth: () => {

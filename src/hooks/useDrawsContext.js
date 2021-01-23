@@ -4,8 +4,7 @@ import { DrawsContext } from "../drawsContext";
 const parseDraw = (draw) => ({
     id: String(draw.id),
     numbers: draw.numbers.map(number => parseInt(number)),
-    time: new Date(draw.time),
-    winers: draw.winers,
+    time: new Date(draw.time)
 });
 
 export const useDrawsContext = () => {
@@ -37,6 +36,14 @@ export const useDrawsContext = () => {
     };
 
     const setNewestDraw = drawObject => {
+        if (drawObject === null) {
+            setState(prevState => ({
+                ...prevState
+            }));
+
+            return;
+        }
+
         setState(prevState => ({
             ...prevState,
             newestDraw: parseDraw(drawObject)

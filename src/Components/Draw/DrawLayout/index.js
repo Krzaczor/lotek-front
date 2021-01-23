@@ -6,7 +6,6 @@ import { useDrawsContext } from '../../../hooks/useDrawsContext';
 
 import Time from '../Time';
 import Numbers from '../Numbers';
-import Winers from '../Winers';
 import Stats from '../Stats';
 
 const Wrapper = styled.div`
@@ -40,7 +39,6 @@ const DrawLayout = () => {
             <Time time={draw.time} />
             <Content>
                 <Numbers numbers={draw.numbers} />
-                <Winers winers={draw.winers} />
                 <Stats stats={draw.stats} />
             </Content>
         </Wrapper>

@@ -1,28 +1,34 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { List, AutoSizer, CellMeasurerCache, CellMeasurer, InfiniteLoader, WindowScroller } from 'react-virtualized';
 
-const cellCacheParams = {
+// const cellCacheParams = {
+//     defaultHeight: 266,
+//     fixedWidth: true,
+// };
+
+const cellCacheParams = new CellMeasurerCache({
     defaultHeight: 266,
     fixedWidth: true,
-};
+})
 
 const VirtualList = ({ months, hasMore, loadMore, month: Month }) => {
-    const [cache, setCache] = useState(() => new CellMeasurerCache(cellCacheParams));
+    // const [cache, setCache] = useState(() => new CellMeasurerCache(cellCacheParams));
 
-    const handleResize = debounce(() => {
-        setCache(new CellMeasurerCache(cellCacheParams));
-    }, 200);
+    // const handleResize = useCallback(debounce(() => {
+    //     setCache(new CellMeasurerCache(cellCacheParams));
+    // }, 200), []);
 
     return (
         <InfiniteLoader
             isRowLoaded={({ index }) => !!months[index] && hasMore}
             loadMoreRows={loadMore}
-            threshold={5}
+            threshold={10}
             rowCount={1000}
         >
             {({ registerChild, onRowsRendered }) => (
-                <WindowScroller onResize={handleResize} >
+                // <WindowScroller onResize={handleResize} >
+                <WindowScroller>
                     {({ isScrolling, scrollTop }) => (
                         <AutoSizer>
                             {({ width, height }) => (
@@ -35,13 +41,16 @@ const VirtualList = ({ months, hasMore, loadMore, month: Month }) => {
                                     isScrolling={isScrolling}
                                     ref={registerChild}
                                     onRowsRendered={onRowsRendered}
-                                    deferredMeasurementCache={cache}
-                                    rowHeight={cache.rowHeight}
+                                    // deferredMeasurementCache={cache}
+                                    // rowHeight={cache.rowHeight}
+                                    deferredMeasurementCache={cellCacheParams} // zamiast state -> cache
+                                    rowHeight={cellCacheParams.rowHeight} // zamiast state -> cache
                                     rowCount={months.length}
                                     rowRenderer={({ index, key, style, parent }) => (
                                         <CellMeasurer
                                             key={key}
-                                            cache={cache}
+                                            // cache={cache}
+                                            key={cellCacheParams} // zamiast state -> cache
                                             parent={parent}
                                             columnIndex={0}
                                             rowIndex={index}

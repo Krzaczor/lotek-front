@@ -1,60 +1,22 @@
 import axios from 'axios';
+import { getToken, removeToken } from './token';
 import { apiUrl, appUrl } from '../config/vars';
 
-const tokenName = 'token';
-
-export const token = {
-    set: (value) => sessionStorage.setItem(tokenName, value),
-    get: () => sessionStorage.getItem(tokenName) || '',
-    remove: () => sessionStorage.removeItem(tokenName),
+export const getDraws = async (url) => {
+    return await axios.get(`${apiUrl}${url}`);
 }
 
-export const getDraws = async (url, { success, fail }) => {
-    try {
-        const result = await axios.get(`${apiUrl}${url}`);
-
-        if (result.statusText === 'OK') {
-            success(result);
-        }
-
-    } catch (error) {
-        fail(error);
-    }
-}
-
-export const addDraw = async ({ data, success, fail }) => {
-    try {
-        const result = await axios(`${apiUrl}/draws`, {
-            method: 'post',
-            responseType: 'json',
-            headers: {
-                'Authorization': `Bearer ${token.get()}`,
-                'Content-Type': 'application/json'
-            },
-            data: JSON.stringify(data),
-        });
-
-        if (result.statusText === 'Created') {
-            console.log(result)
-            success(result);
-        }
-
-    } catch (error) {
-        fail(error);
-    }
-}
-
-export const verifyToken = () => {
-    return axios(`${apiUrl}/auth/veryfication`, {
+export const verifyToken = async () => {
+    return await axios(`${apiUrl}/auth/veryfication`, {
         method: 'get',
         headers: {
-            'Authorization': `Bearer ${token.get()}`
+            'Authorization': `Bearer ${getToken()}`
         }
     });
 }
 
-export const login = ({username, password}) => {
-    return axios(`${apiUrl}/auth/login`, {
+export const login = async ({username = '', password = ''}) => {
+    return await axios(`${apiUrl}/auth/login`, {
         method: 'post',
         headers: {
             'Content-Type': 'application/json'
@@ -64,32 +26,7 @@ export const login = ({username, password}) => {
 }
 
 export const logout = () => {
-    // sessionStorage.removeItem
-}
-
-export const requestAction = async (url, { before, success = null, fail = null }) => {
-    try {
-        if (typeof before === 'function') {
-            before();
-        }
-
-        let result = null;
-
-        if (url.search('http') !== -1 || url.search('https') !== -1) {
-            result = await axios.get(url);
-        } else {
-            result = await axios.get(`${apiUrl}${url}`);
-        }
-
-        if (success) {
-            success(result);
-        }
-
-    } catch (error) {
-        if (fail) {
-            fail(error);
-        }
-    }
+    removeToken();
 }
 
 export const redirect = (url, replace = true) => {

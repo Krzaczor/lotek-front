@@ -21,6 +21,14 @@ const Wrapper = styled.div`
 `;
 
 const DrawsComponent = ({draws, hasNextDraws, moreDraws}) => {
+    if (draws === null) {
+        return null;
+    }
+
+    if (draws.length === 0) {
+        return <Wrapper>Nie ma losowań</Wrapper>;
+    }
+
     return (
         <Wrapper>
             <Calendar

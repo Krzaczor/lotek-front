@@ -11,7 +11,7 @@ const Dashboard = () => {
             dataProvider={dataProvider}
             authProvider={authProvider}
         >
-            <Resource {...draws} />
+            <Resource name='draws' {...draws} />
         </Admin>
     );
 }

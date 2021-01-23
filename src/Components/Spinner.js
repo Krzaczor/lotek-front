@@ -6,6 +6,7 @@ import { device } from '../config/styles';
 const LoaderWrapper = styled.div`
     position: relative;
     height: ${props => props.suspense ? '100vh' : '20vh'};
+    ${props => props.suspense ? 'background-color: rgba(0, 0, 0, 0.3)' : ''};
 
     @media ${device.tablet} {
         ${props => props.suspense ? '' : 'width: 50%'};

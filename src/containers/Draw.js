@@ -10,15 +10,14 @@ const Draw = () => {
     const { setNewestDraw } = useDrawsContext();
 
     useEffect(() => {
-        getDraws('/draws/first', {
-            success({ data }) {
-                setNewestDraw(data);
+        getDraws('/draws/first')
+            .then((res) => {
+                setNewestDraw(res.data);
                 setLoading(false);
-            },
-            fail(error) {
+            })
+            .catch((error) => {
                 setError(error);
-            }
-        });
+            });
     }, []);
 
     return (

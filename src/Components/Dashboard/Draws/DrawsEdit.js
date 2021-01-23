@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Create,
+    Edit,
     SimpleForm,
     DateInput,
     CheckboxGroupInput
@@ -8,15 +8,15 @@ import {
 
 import numbersList from './numbers';
 
-const DrawsList = (props) => {
+const DrawsEdit = (props) => {
     return (
-        <Create {...props} title="Tworzenie losowania">
+        <Edit {...props} title="Edycja losowania">
             <SimpleForm>
-                <CheckboxGroupInput label="Liczby" source="numbers" choices={numbersList} translateChoice={false} />
+            <CheckboxGroupInput label="Liczby" source="numbers" choices={numbersList} translateChoice={false} />
                 <DateInput label="Data losowania" source="time" />
             </SimpleForm>
-        </Create>
+        </Edit>
     )
 }
 
-export default DrawsList;
+export default DrawsEdit;

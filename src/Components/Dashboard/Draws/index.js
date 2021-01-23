@@ -1,10 +1,11 @@
 import DrawsList from './DrawsList';
 import DrawsCreate from './DrawsCreate';
+import DrawsEdit from './DrawsEdit';
 
 const drawsResourceProps = {
-    name: 'draws',
     list: DrawsList,
-    create: DrawsCreate
+    create: DrawsCreate,
+    edit: DrawsEdit,
 }
 
 export default drawsResourceProps;

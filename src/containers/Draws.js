@@ -1,50 +1,52 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { requestAction } from '../utils';
+import { getDraws } from '../utils';
 import { useDrawsContext } from '../hooks/useDrawsContext';
 
 import DrawsCollaction from '../components/Draws/Draws';
 
 export default () => {
     const { draws, setDraws } = useDrawsContext();
+
     const [error, setError] = useState(null);
-    const [state, setState] = useState({
-        loading: true,
-        urlToDraws: '/draws/public',
-        hasNextDraws: true,
-    })
+    const [loading, setLoading] = useState(true);
+    const [urlDraws, setUrlDraws] = useState('/draws');
+    const [hasNextDraws, setHasNextDraws] = useState(true);
 
     useEffect(() => {
-        requestAction('/draws/public', {
-            success({ data, headers }) { setStateAndContext(data, headers) },
-            fail(error) { setError(error) }
-        });
+        getDraws(urlDraws)
+            .then(({ data, headers }) => {
+                setStateAndContext(data, headers)
+            })
+            .catch((error) => {
+                setError(error)
+            });
     }, []);
 
     const setStateAndContext = useCallback((data, { next }) => {
-        setState({
-            loading: false,
-            hasNextDraws: next ? true : false,
-            urlToDraws: next,
-        });
-
+        setLoading(false);
+        setHasNextDraws(next ? true : false);
+        setUrlDraws(next);
         setDraws(data);
-    });
+    }, []);
 
     const moreDraws = useCallback(() => {
-        if (state.urlToDraws) {
-            requestAction(state.urlToDraws, {
-                success({ data, headers }) { setStateAndContext(data, headers) },
-                fail(error) { setError(error) }
-            });
+        if (hasNextDraws) {
+            getDraws(urlDraws)
+                .then(({ data, headers }) => {
+                    setStateAndContext(data, headers)
+                })
+                .catch((error) => {
+                    setError(error)
+                });
         }
-    });
+    }, []);
 
     return (
         <DrawsCollaction
             error={error}
-            loading={state.loading}
+            loading={loading}
             draws={draws}
-            hasNextDraws={state.hasNextDraws}
+            hasNextDraws={hasNextDraws}
             moreDraws={moreDraws}
         />
     )

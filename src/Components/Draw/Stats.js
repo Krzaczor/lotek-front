@@ -47,7 +47,7 @@ const Info = styled.div`
 
 const Stats = ({stats}) => {
     return (
-        <Section title="więcej informacji">
+        <Section title="szczegóły">
             <Stat><p>Losowania z takimi samymi liczbami:</p><p>0</p></Stat>
             <Stat><p>Rozpiętość liczb:</p><p>40</p></Stat>
             <StatNumbersList>

@@ -4,7 +4,6 @@ import { useDrawsContext } from '../../../hooks/useDrawsContext';
 import Modal from '../../Modal';
 import Time from '../Time';
 import Numbers from '../Numbers';
-import Winers from '../Winers';
 import Stats from '../Stats';
 
 const DrawModal = () => {
@@ -15,7 +14,6 @@ const DrawModal = () => {
     <Modal>
         <Time time={draw.time} />
         <Numbers numbers={draw.numbers} />
-        <Winers winers={draw.winers} />
         <Stats stats={draw.stats} />
     </Modal>
   );
